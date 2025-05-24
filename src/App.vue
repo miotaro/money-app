@@ -1,47 +1,89 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase';
+import HeaderBar from './components/HeaderBar.vue';
+import { storeToRefs } from 'pinia'
+import ExpenseForm from './components/ExpenseForm.vue'
+import { useModalStore } from './stores/modalOpenStore';
+
+const modalStore = useModalStore()
+const { isModalOpen } = storeToRefs(modalStore)
+
+onAuthStateChanged(auth, user => {
+  console.log('ログイン状態', user)
+})
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <div>
+    <HeaderBar />
+    <router-view class="router-view"/>
+    <div v-if="!isModalOpen" @click="modalStore.toggleModal()" class="add-form">
+      <font-awesome-icon :icon="['fas', 'plus']" />
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+    <div v-if="isModalOpen" @click.self="modalStore.toggleModal()" class="modal-overlay" >
+      <ExpenseForm
+        class="expense-form"
+        @close="modalStore.toggleModal"
+      />
+    </div>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  background-color: #FFD5EC;
+  font-family: '07にくまるフォント';
+}
+.router-view {
+  padding-top: 100px;
+  max-width: 500px;
+  margin: auto;
+}
+.add-form {
+  background-color: #FF367F;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+  color: white;
+  font-size: 35px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  bottom: 50px;
+  right: 20px;
+  position: fixed;
+  z-index: 1000;
+}
+.add-form:hover {
+  opacity: 1;
+}
+.expense-form {
+  max-width: 400px;
+  height: 500px;
+  padding: 50px;
+  margin: auto;
+  border-radius: 10px;
+  background-color: white;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3); /* 半透明の背景 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
 </style>
