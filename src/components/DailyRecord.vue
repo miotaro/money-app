@@ -70,7 +70,7 @@ const cancelEdit = () => {
           <div v-else>
             <div class="amount-delete">
               <div class="amount-list" :class="{ income: !record.amountType, expense: record.amountType }">
-                {{ record.amountType ? 'ー' : '＋' }}￥{{ record.amount.toLocaleString() }}
+                {{ record.amountType ? '-' : '+' }}￥{{ record.amount.toLocaleString() }}
               </div>
               <font-awesome-icon 
                 :icon="['fas', 'circle-xmark']"
