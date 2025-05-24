@@ -71,4 +71,10 @@ const chartOptions = {
 .pie-chart {
   margin: 80px;
 }
+
+@media (max-width: 425px) {
+  .pie-chart {
+  margin: 30px;
+}
+}
 </style>

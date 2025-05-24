@@ -174,4 +174,13 @@ input::placeholder {
   font-size: 0.8rem;
   margin-top: 2px;
 }
+
+@media (max-width: 425px) {
+  label {
+    margin: 10px 0;
+  }
+  input {
+    width: 260px;
+  }
+}
 </style>

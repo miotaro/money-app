@@ -62,9 +62,11 @@ const validateForm = () => {
       パスワード
       <div class="error">{{ errors.password }}</div>
       <input :type="showPassword ? 'text' : 'password'" v-model="password" />
+      <div class="checkbox-wrapper">
+        <input type="checkbox" v-model="showPassword" class="checkbox"/>
+        <label>パスワードを表示</label>
+      </div>
     </label>
-    <input type="checkbox" v-model="showPassword" class="check-box"/>
-    <label>パスワードを表示</label>
     <button @click="handleSubmit">{{ isLoginMode ? 'ログイン' : '新規登録' }}</button>
     <a href="#" @click.prevent="toggleMode">
       {{ isLoginMode ? '新規登録はこちら ＞' : 'ログインはこちら ＞' }}
@@ -73,8 +75,11 @@ const validateForm = () => {
 </template>
 
 <style>
-.check-box {
-  float: left;
-  margin-right: 10px;
+.checkbox-wrapper {
+  display: flex;
+  justify-content: flex-start;
+}
+.checkbox {
+  width: 15px;
 }
 </style>

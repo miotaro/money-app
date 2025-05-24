@@ -1,16 +1,24 @@
 <script setup>
+import { onMounted } from 'vue';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
 import HeaderBar from './components/HeaderBar.vue';
 import { storeToRefs } from 'pinia'
 import ExpenseForm from './components/ExpenseForm.vue'
 import { useModalStore } from './stores/modalOpenStore';
+import { useAuthStore } from './stores/authStore';
 
 const modalStore = useModalStore()
 const { isModalOpen } = storeToRefs(modalStore)
+const authStore = useAuthStore()
+const { isLoggedIn } = storeToRefs(authStore)
 
 onAuthStateChanged(auth, user => {
   console.log('ログイン状態', user)
+})
+
+onMounted(() => {
+  authStore.fetchUser()
 })
 </script>
 
@@ -18,7 +26,7 @@ onAuthStateChanged(auth, user => {
   <div>
     <HeaderBar />
     <router-view class="router-view"/>
-    <div v-if="!isModalOpen" @click="modalStore.toggleModal()" class="add-form">
+    <div v-if="!isModalOpen && isLoggedIn" @click="modalStore.toggleModal()" class="add-form">
       <font-awesome-icon :icon="['fas', 'plus']" />
     </div>
     <div v-if="isModalOpen" @click.self="modalStore.toggleModal()" class="modal-overlay" >
@@ -86,4 +94,20 @@ body {
   z-index: 999;
 }
 
+@media (max-width: 1024px) {
+  .expense-form {
+    margin-top: 100px;
+    padding: 30px 50px;
+  }
+}
+@media (max-width: 425px) {
+  .expense-form {
+    padding: 20px 20px 0 20px;
+  }
+  .router-view {
+    padding-top: 100px;
+    max-width: 320px;
+  }
+
+}
 </style>

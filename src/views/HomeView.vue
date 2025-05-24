@@ -4,17 +4,17 @@ import { useRecordStore } from '@/stores/recordStore';
 import { useMonthlyAmountStore } from '@/stores/monthlyAmountStore';
 import { useAmountStore } from '@/stores/amountStore';
 import { computed, watch } from 'vue';
-import BarChart from '@/components/BarChart.vue'
+// import BarChart from '@/components/BarChart.vue'
 
 const recordStore = useRecordStore()
 const { records } = storeToRefs(recordStore)
 const monthlyAmountStore = useMonthlyAmountStore()
 const amountStore = useAmountStore()
 
-watch(records, (newRecords) => {
-  const result = amountStore.monthlyTotals(newRecords)
-  console.log('monthlyTotals result (watched):', result)
-})
+// watch(records, (newRecords) => {
+//   const result = amountStore.monthlyTotals(newRecords)
+//   console.log('monthlyTotals result (watched):', result)
+// })
 
 // const months = ['6月', '7月', '8月', '9月', '10月', '11月', '12月', '1月', '2月', '3月', '4月', '5月'];
 // const totals = computed(() => {

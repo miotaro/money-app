@@ -1,18 +1,18 @@
 <script setup>
 // import poohImage from '@/asset/POOH.PNG'
-import { getAuth, signOut } from 'firebase/auth';
+import { ref } from 'vue'
 import { useRouter } from 'vue-router' 
+import { useAuthStore } from '@/stores/authStore';
+import { storeToRefs } from 'pinia'
 
+const authStore = useAuthStore()
+const { isLoggedIn } = storeToRefs(authStore)
+const { logout } = authStore
 const router = useRouter()
 
-const logout = async () => {
-  const auth = getAuth()
-  try {
-    await signOut(auth)
-    router.push('/login')
-  } catch {
-    alert('ログアウト失敗:' + error)
-  }
+const isMenuOpen = ref(false)
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value
 }
 </script>
 
@@ -22,11 +22,22 @@ const logout = async () => {
       <!-- <img :src="poohImage" alt="Pooh"> -->
       <h2>ぴこまね<span class="header-title">picomoney</span></h2>
     </div>
-    <nav>
-      <a class="logout" href="#" @click.prevent="logout">ログアウト</a>
-      <router-link to="/"><font-awesome-icon :icon="['fas', 'house']" class="header-icon" /></router-link>
-      <router-link to="/record"><font-awesome-icon :icon="['fas', 'piggy-bank']" class="header-icon" /></router-link>
-      <router-link to="/summary"><font-awesome-icon :icon="['fas', 'chart-pie']" class="header-icon" /></router-link>
+    <nav v-if="isLoggedIn" class="header-right">
+      <div class="header-menus">
+        <a class="logout" href="#" @click.prevent="logout">ログアウト</a>
+        <router-link to="/"><font-awesome-icon :icon="['fas', 'house']" class="header-icon" /></router-link>
+        <router-link to="/record"><font-awesome-icon :icon="['fas', 'piggy-bank']" class="header-icon" /></router-link>
+        <router-link to="/summary"><font-awesome-icon :icon="['fas', 'chart-pie']" class="header-icon" /></router-link>
+      </div>
+      <div class="header-bar-menus">
+        <div v-if="isMenuOpen" class="header-menu">
+          <a class="logout" href="#" @click.prevent="logout">ログアウト</a>
+          <router-link to="/">ホーム</router-link>
+          <router-link to="/record">収支一覧</router-link>
+          <router-link to="/summary">月別収支</router-link>
+        </div>
+        <font-awesome-icon :icon="['fas', 'bars']" class="bar-icon header-icon" @click="toggleMenu"/>
+      </div>
     </nav>
   </header>
 </template>
@@ -66,5 +77,32 @@ nav {
 }
 .header-icon:hover {
   opacity: 1;
+}
+.header-bar-menus {
+  display: none;
+}
+
+@media (max-width: 425px) {
+  .header-menus {
+    display: none;
+  }
+  .header-bar-menus {
+    display: flex;
+    position: relative;
+    width: 120px;
+    line-height: 20px;
+  }
+  .header-menu {
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+    position: absolute;
+    top: -10px;
+  }
+  .bar-icon {
+    position: absolute;
+    top: -10px;
+    left: 75px;
+  }
 }
 </style>

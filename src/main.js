@@ -7,8 +7,8 @@ import { getAuth, onAuthStateChanged } from "firebase/auth"
 // Font Awesomeの読み込み
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faPlus, faNoteSticky, faHouse, faPiggyBank, faChartPie, faCircleXmark } from '@fortawesome/free-solid-svg-icons' // ← 使いたいアイコンだけ追加
-library.add(faPlus, faNoteSticky, faHouse, faPiggyBank, faChartPie, faCircleXmark)
+import { faPlus, faNoteSticky, faHouse, faPiggyBank, faChartPie, faCircleXmark, faBars } from '@fortawesome/free-solid-svg-icons' // ← 使いたいアイコンだけ追加
+library.add(faPlus, faNoteSticky, faHouse, faPiggyBank, faChartPie, faCircleXmark, faBars)
 
 let app
 const auth = getAuth()
