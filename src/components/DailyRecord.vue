@@ -49,7 +49,7 @@ const cancelEdit = () => {
       :key="date"
     >
       <h3>{{ formatDateStore.formatDate(date) }}</h3>
-      <p v-if="getDailyExpenseTotal(records) > 0" class="daily-total">今日の支出： ー￥{{  getDailyExpenseTotal(records).toLocaleString() }}</p>
+      <p v-if="getDailyExpenseTotal(records) > 0" class="daily-total">今日の支出： -￥{{  getDailyExpenseTotal(records).toLocaleString() }}</p>
       <ul>
         <li
           v-for="(record, index) in records"
